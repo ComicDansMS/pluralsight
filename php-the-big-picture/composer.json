@@ -1,0 +1,12 @@
+{
+    "name": "daniel/php-the-big-picture",
+    "autoload": {
+        "psr-4": {
+            "Daniel\\PhpTheBigPicture\\": "src/"
+        }
+    },
+    "require": {
+        "monolog/monolog": "^2.3",
+        "guzzlehttp/guzzle": "^7.3"
+    }
+}
