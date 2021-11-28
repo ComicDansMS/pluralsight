@@ -1,30 +1,26 @@
 'use strict'; 
 (function() {
   
-  function Person(firstName, lastName, sex, age) {
-    this.firstName = firstName,
-    this.lastName = lastName,
-    this.sex = sex,
-    this.age = age,
-    this.isAdult = function() { return this.age >= 18; }
-  }
-
-  function Venue(name, city, restricted) {
+  function food(name, type, carbohydrate, fibre, sugar, protein, fat) {
     this.name = name,
-    this.city = city,
-    this.restricted = restricted
+    this.type = type
+    this.carbohydrate = carbohydrate,
+    this.fibre = fibre,
+    this.sugar = sugar
+    this.protein = protein,
+    this.fat = fat,
+    this.isHealthy = function() { return this.sugar < 15 && this.carbohydrate / this.fibre < 10 }
   }
 
-  let daniel = new Person('Daniel', 'Holmes', 'male', 35);
-  let Palita = new Person('Palita', 'Holmes', 'female', 40);
-  let lachlan = new Person('Lachlan', 'Holmes', 'male', 17);
-  let dean = new Person('Dean', 'Holmes', 'male', 70);
-  let bronwyn = new Person('Bronwyn', 'Holmes', 'female', 72)
+  let banana = new food('Banana', 'fruit', 23, 2.6, 12, 1, 0);
 
-  let theNightclub = new Venue('The Pub', 'Adelaide', true)  ;
-  let theRestaurant = new Venue('The Restaurant', 'Adelaide', false);
+  for (let propertyName in banana) {
+    display(propertyName + ': ' + banana[propertyName])
+  }
+
+  display(banana.isHealthy())
 
 
-  display(theRestaurant)
 
-})();
+
+})(); 
