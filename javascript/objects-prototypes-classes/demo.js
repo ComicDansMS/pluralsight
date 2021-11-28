@@ -1,26 +1,86 @@
 'use strict'; 
 (function() {
+
+  let person ={
+    name: {
+      first: 'Daniel',
+      last: 'Holmes'
+    },
+    age: 35
+  };
   
-  function food(name, type, carbohydrate, fibre, sugar, protein, fat) {
-    this.name = name,
-    this.type = type
-    this.carbohydrate = carbohydrate,
-    this.fibre = fibre,
-    this.sugar = sugar
-    this.protein = protein,
-    this.fat = fat,
-    this.isHealthy = function() { return this.sugar < 15 && this.carbohydrate / this.fibre < 10 }
-  }
+  Object.defineProperty(person, 'fullName',
+  {
+    get: function() {
+      return this.name.first + ' ' + this.name.last;
+    },
+    set: function(value) {
+      var nameParts = value.split(' ');
+      this.name.first = nameParts[0];
+      this.name.last = nameParts[1];
+    }
+  });
 
-  let banana = new food('Banana', 'fruit', 23, 2.6, 12, 1, 0);
+  person.fullName = 'Dan Rhys';
 
-  for (let propertyName in banana) {
-    display(propertyName + ': ' + banana[propertyName])
-  }
-
-  display(banana.isHealthy())
-
+  display(person.fullName);
+  display(person.name.first);
+  display(person.name.last);
 
 
+  
 
 })(); 
+
+/*
+
+RECAP OF KEY TAKEAWAYS
+======================
+
+- We can access properties with dot notation and also bracket notation
+
+  person.firstName;
+  person['firstName'];
+
+
+- This allows us to use variables to access properties on objects
+
+  let propertyName = 'firstName';
+  person[propertyName];
+
+
+- We can use Object.defineProperty to make properties read-only, enumerable, and lock out changing property descriptors
+
+  Object.defineProperty(
+    person,
+    'firstName',
+    {writable: false}
+  );
+
+  Object.defineProprty(
+    person,
+    'firstName',
+    {enumerable: false}
+  );
+
+  Object.defineProperty(
+    person,
+    'firstName',
+    {configurable: false}
+  )
+
+
+  - We used Object.defineProperty to create getters and setter properties that are properties backed by functions
+
+  Object.defineProperty(
+    person,
+    'firstName',
+    get: function() {
+      ...
+    },
+    set: function() {
+      ...
+    }
+  );
+
+*/
