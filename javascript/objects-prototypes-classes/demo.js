@@ -1,59 +1,70 @@
 'use strict'; 
 (function() {
+  
+  class Person {
+    constructor(firstName, lastName, age) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.age = age;
+    }
 
-  function Person(firstName, lastName, age) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.age = age;
-    Object.defineProperty(this, 'fullName', {
-      get: function() {
-        return this.firstName + ' ' + this.lastName
-      },
-      enumerable: true
-    });
+    static adultAge = 18;
+
+    get fullName() {
+      return this.firstName + ' ' + this.lastName;
+    }
+
+    set fullName(fullName) {
+      var nameParts = fullName.split(' ');
+      this.firstName = nameParts[0];
+      this.lastName = nameParts[1];
+    }
+
+    isAdult() {
+      return this.age >= 18;
+    }
   }
+  
+  class Student extends Person {
+    constructor(firstName, lastName, age) {
+      super(firstName, lastName, age);
+      this._enrolledCourses = [];
+    }
 
-  function Student(firstName, lastName, age) {
-    Person.call(this, firstName, lastName, age);
-    this._enrolledCourses = [];
+    static fromPerson(person) {
+      return new Student(person.firstName, person.lastName, person.age);
+    }
 
-    this.enroll = function(courseId) {
-      this._enrolledCourses.push(courseId)
-    };
+    enroll(courseId) {
+      this._enrolledCourses.push(courseId);
+    }
 
-    this.getCourses = function() {
+    getCourses() {
       return this.fullName + "'s enrolled courses are: " + this._enrolledCourses.join(', ');
-    };
+    }
   }
-  Student.prototype = Object.create(Person.prototype);
-  Student.prototype.constructor = Student;
 
-  let daniel = new Student('Daniel', 'Holmes', 35);
+  let daniel = new Person('Daniel', 'Holmes', 35);
 
-  daniel.enroll('Learn to be cool');
-  daniel.enroll('Fly with the kids');
-  daniel.enroll('How to not give a fuck');
-  display(daniel);
-  
-  display(daniel.getCourses());
-  
+  let danielStudent = Student.fromPerson(daniel);
+
+  display(danielStudent);
+
 })(); 
-
 
 /*
 
-KEY TAKEAWAYS
+SUMMARY
 
-- Functions have prototypes
-  - These prototypes point to objects in memory
-  - When you create new objects from those constructor functions, their prototypes point to the same object in memory. It's the same instance.
 
-- Object prototypes can have properties
-- When asking for a property value of an object, it will check the object first and then the prototype if the object does not have the property.
-  - Any new objects created from constructor functions will inherit any properties set on the prototype, unless they have that property set.
-
-- We learnt how to setup inheritence with constructor functions by setting the prototype of one function by the prototype of another function.
-- We can initialise the parent classes properties by calling its function using the .call() function and passing through the context of 'this'
+- We create new classes with the 'class' keyword.
+- We can create new instances of the class with the 'new' keyword.
+- The constructor is used to initialise property values.
+- Getter and setter properties are easier to create than using Object.defineProperty when working with prototypes.
+- Methods are also easy to create.
+- We can create static properties and methods using the 'static' keyword.
+- Inheritence is easy with the 'extends' keyword
+- We can call parent class constructors with the 'super' function
 
 
 */
