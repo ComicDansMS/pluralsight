@@ -1,70 +1,59 @@
 'use strict'; 
 (function() {
-  
-  class Person {
-    constructor(firstName, lastName, age) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.age = age;
-    }
 
-    static adultAge = 18;
+  // Math object
+  display(Math.PI);
+  display(Math.round(5.335));
+  display(Math.max(1,6,3,77,442,657,34,757,343));
+  display('==========================');
 
-    get fullName() {
-      return this.firstName + ' ' + this.lastName;
-    }
 
-    set fullName(fullName) {
-      var nameParts = fullName.split(' ');
-      this.firstName = nameParts[0];
-      this.lastName = nameParts[1];
-    }
+  // Date object
+  let date = new Date(2022,1,7,18,30,50);
+  date.setMonth(5);
+  display(date.toString());
+  display('==========================');
 
-    isAdult() {
-      return this.age >= 18;
-    }
+
+  // Validating strings with regex
+  function checkPasswordComplexity(password) {
+    // let regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$', 'gi');
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/gi;
+
+    return regex.test(password);
   }
+  display(checkPasswordComplexity('AreallyhaRdPassWord69!!'));
+  display('==========================');
   
-  class Student extends Person {
-    constructor(firstName, lastName, age) {
-      super(firstName, lastName, age);
-      this._enrolledCourses = [];
-    }
+  
+  function findAlerts(logData) {
+    let regex = /ERROR(.*?):(.*?);/g;
 
-    static fromPerson(person) {
-      return new Student(person.firstName, person.lastName, person.age);
-    }
+    let result = regex.exec(logData);
 
-    enroll(courseId) {
-      this._enrolledCourses.push(courseId);
-    }
-
-    getCourses() {
-      return this.fullName + "'s enrolled courses are: " + this._enrolledCourses.join(', ');
+    while(result !== null) {
+      display(result[1]);
+      display(result[2]);
+      display('--------------');
+      result = regex.exec(logData);
     }
   }
 
-  let daniel = new Person('Daniel', 'Holmes', 35);
-
-  let danielStudent = Student.fromPerson(daniel);
-
-  display(danielStudent);
+  let logData = 'INFO:Ok;ERROR(HIGH):Something broke;ERROR(LOW):Something Fishy;ERROR(HIGH):So many errors;';
+  findAlerts(logData);
+  
 
 })(); 
 
 /*
 
-SUMMARY
+KEY TAKEAWAYS
 
+- Math object encapsulates a host of math constants
+- The date object contains constructors to create specific dates and times
 
-- We create new classes with the 'class' keyword.
-- We can create new instances of the class with the 'new' keyword.
-- The constructor is used to initialise property values.
-- Getter and setter properties are easier to create than using Object.defineProperty when working with prototypes.
-- Methods are also easy to create.
-- We can create static properties and methods using the 'static' keyword.
-- Inheritence is easy with the 'extends' keyword
-- We can call parent class constructors with the 'super' function
-
+- There are two different ways to create a regular expression - The 'new' keyword, or the regex shorthand.
+- The regex.test function returns a boolean that indicating whether the string contains text matching the regular expression
+- The exec command searches a string. It can be called multiple times (in the same instance) to return multiple matches.
 
 */
