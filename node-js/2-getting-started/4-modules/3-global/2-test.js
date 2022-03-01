@@ -1,3 +1,3 @@
-require('./2-set');
+const globalObject = require('./2-set.js');
 
-console.log(answer);
+console.log(hello('Daniel'));

@@ -1,5 +1,5 @@
-const templateGenerator = require('./4-function');
+const htmlTemplate = require('./4-function.js');
 
-const myTemplate = templateGenerator('Hello Node!');
+const sickWebsite = htmlTemplate('Dans cool site', 'Geocities kicks the lahmas ass')
 
-console.log(myTemplate);
+console.log(sickWebsite);

@@ -1,6 +1,6 @@
 // Top-level API is a function
 
-module.exports = title => `
+module.exports = (title, contents) => `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -10,7 +10,7 @@ module.exports = title => `
     <title>${title}</title>
   </head>
   <body>
-
+    ${contents}
   </body>
   </html>
 `;
