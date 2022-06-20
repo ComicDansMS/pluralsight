@@ -14,9 +14,9 @@ readline.on('line', async line => {
       {
         axios.get('http://localhost:3001/food').then(({data}) => {
           let idx = 0;
-          const veganOnly = data.filter(food => {
-            return food.dietary_preferences.includes('vegan');
-          });
+          const veganOnly = data.filter(food =>
+            food.dietary_preferences.includes('vegan')
+          );
 
           const veganIterable = {
             [Symbol.iterator]() {
@@ -51,7 +51,7 @@ readline.on('line', async line => {
 
       const actionIterator = {
         [Symbol.iterator]() {
-          const positions = [...this.actions];
+          let positions = [...this.actions];
           return {
             [Symbol.iterator]() {
               return this;
@@ -62,7 +62,7 @@ readline.on('line', async line => {
                 const result = position(...args);
                 return { value: result, done: false };
               } else {
-                return { value: result, done: true };
+                return { done: true };
               }
             }
           };
@@ -85,23 +85,21 @@ readline.on('line', async line => {
         actionIt.next();
         readline.prompt();
       }
-      
-      {
-        readline.question('What would you like to log today?', (item) => {
-          let position = it.next();
-        
-          while(!position.done) {
-            const food = position.value.name;
-            if (food === item) {
-              console.log(`${item} has ${position.value.calories} calories.`);
-              actionIt = actionIterator[Symbol.iterator]();
-              actionIt.next(position.value);
-            }
-            position = it.next();
+
+      readline.question(`What would you like to log today? `, item => {
+        let position = it.next();
+        while (!position.done) {
+          const food = position.value.name;
+          if (food === item) {
+            console.log(`A single serving of ${item} has ${position.value.calories} calories.`);
+            actionIt = actionIterator[Symbol.iterator]();
+            actionIt.next(position.value);
           }
-        
-          readline.prompt();
-        });
-      }
+          position = it.next();
+        }
+        readline.prompt();
+      });
+      break;
   }
-})
+  readline.prompt();
+});
