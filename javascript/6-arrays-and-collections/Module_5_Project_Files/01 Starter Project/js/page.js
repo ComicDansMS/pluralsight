@@ -6,7 +6,20 @@ let hikingRadio = document.getElementById('hiking');
 let runningRadio = document.getElementById('running');
 let huntingRadio = document.getElementById('hunting');
 
-// Code goes here
+let testBuffer = new ArrayBuffer(16);
+
+let view1 = new Int16Array(testBuffer);
+  
+view1[0] = 83;
+view1[2] = 1;
+
+console.log(view1)
+
+
+let view2 = new DataView(testBuffer);
+
+console.log(view2 )
+
 
 // Add Sales
 function addSale(){

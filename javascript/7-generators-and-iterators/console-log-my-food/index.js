@@ -1,30 +1,66 @@
 #! /usr/bin/env node
-const readline = require('readline').createInterface({
+const axios = require('axios');
+
+const readline = require ('readline').createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'enter command > '
-})
+  prompt: 'enter command >'
+});
 
 readline.prompt();
 readline.on('line', line => {
-  switch (line.trim())
-})
+  switch (line.trim()) {
+    case 'list vegan foods' :
+      {
+        axios.get('http://localhost:3001/food').then(({data}) => {
+          let idx = 0;
+          const veganOnly = data.filter(food => {
+            return food.dietary_preferences.includes('vegan');
+          })
 
-readline.question('What would you like to log today?', async item => {
-  const { data } = await axios.get('http://localhost:3001/food');
-  const it = data[Symbol.iterator]();
-  let position = it.next();
+          const veganIterable = {
+            [Symbol.iterator]() {
 
-  while(!position.done) {
-    const food = position.value.name;
+              return {
+                [Symbol.iterator]() { return this;},
+                next() {
+                  const current = veganOnly[idx];
+                  idx++;
+                  if (current) {
+                    return { value: current, done: false }
+                  } else {
+                    return { value: current, done: true }
+                  }
+                }
+              }
+            }
+          }
 
-    if (food === item) {
-      console.log(`${item} has ${position.value.calories} calories`)
-    }
+          for (let val of veganIterable) {
+            console.log(val.name);
+          }
 
-    position = it.next();
+          readline.prompt();
+        })
+      }
+      break;
+    case 'log' :
+      {
+        readline.question('What would you like to log today?', async (item) => {
+          const { data } = await axios.get('http://localhost:3001/food');
+          const it = data[Symbol.iterator]();
+          let position = it.next();
+        
+          while(!position.done) {
+            const food = position.value.name;
+            if (food === item) {
+              console.log(`${item} has ${position.value.calories} calories.`)
+            }
+            position = it.next();
+          }
+        
+          readline.prompt();
+        })
+      }
   }
-
-  console.log(item);
-  readline.close();
-});
+})
